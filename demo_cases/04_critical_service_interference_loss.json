@@ -1,0 +1,30 @@
+{
+  "geometry": {
+    "nominal_diameter_mm": 50.0,
+    "hub_outer_diameter_mm": 90.0,
+    "contact_length_mm": 35.0,
+    "fit_code": "H7/k6",
+    "shaft_roughness_um": 1.6,
+    "bore_roughness_um": 1.6
+  },
+  "materials": {
+    "shaft_elastic_modulus_gpa": 210.0,
+    "hub_elastic_modulus_gpa": 170.0,
+    "shaft_poisson_ratio": 0.3,
+    "hub_poisson_ratio": 0.29,
+    "shaft_yield_strength_mpa": 550.0,
+    "hub_yield_strength_mpa": 320.0,
+    "shaft_thermal_expansion": 1.15e-05,
+    "hub_thermal_expansion": 1.4e-05
+  },
+  "operating": {
+    "transmitted_torque_nm": 250.0,
+    "axial_force_n": 3000.0,
+    "working_temperature_c": 120.0,
+    "assembly_temperature_c": 20.0,
+    "desired_installation_clearance_um": 20.0,
+    "press_friction_coefficient": 0.12,
+    "service_friction_coefficient": 0.15,
+    "equipment_force_limit_kn": 150.0
+  }
+}

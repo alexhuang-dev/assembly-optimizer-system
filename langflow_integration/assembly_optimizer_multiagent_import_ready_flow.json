@@ -1,0 +1,1475 @@
+{
+  "data": {
+    "edges": [
+      {
+        "animated": false,
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ChatInput",
+            "id": "ChatInput-AssemblyMultiAgent",
+            "name": "message",
+            "output_types": [
+              "Message"
+            ]
+          },
+          "targetHandle": {
+            "fieldName": "input_text",
+            "id": "PythonREPLComponent-AssemblyMultiAgent",
+            "inputTypes": [
+              "Text",
+              "Message"
+            ],
+            "type": "str"
+          }
+        },
+        "id": "edge-ChatInput-AssemblyMultiAgent-message-PythonREPLComponent-AssemblyMultiAgent-input_text",
+        "selected": false,
+        "source": "ChatInput-AssemblyMultiAgent",
+        "sourceHandle": "{\"dataType\":\"ChatInput\",\"id\":\"ChatInput-AssemblyMultiAgent\",\"name\":\"message\",\"output_types\":[\"Message\"]}",
+        "target": "PythonREPLComponent-AssemblyMultiAgent",
+        "targetHandle": "{\"fieldName\":\"input_text\",\"id\":\"PythonREPLComponent-AssemblyMultiAgent\",\"inputTypes\":[\"Text\",\"Message\"],\"type\":\"str\"}"
+      },
+      {
+        "animated": false,
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "PythonREPLComponent",
+            "id": "PythonREPLComponent-AssemblyMultiAgent",
+            "name": "results",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "fieldName": "input_data",
+            "id": "ParserComponent-AssemblyMultiAgent",
+            "inputTypes": [
+              "DataFrame",
+              "Data"
+            ],
+            "type": "other"
+          }
+        },
+        "id": "edge-PythonREPLComponent-AssemblyMultiAgent-results-ParserComponent-AssemblyMultiAgent-input_data",
+        "selected": false,
+        "source": "PythonREPLComponent-AssemblyMultiAgent",
+        "sourceHandle": "{\"dataType\":\"PythonREPLComponent\",\"id\":\"PythonREPLComponent-AssemblyMultiAgent\",\"name\":\"results\",\"output_types\":[\"Data\"]}",
+        "target": "ParserComponent-AssemblyMultiAgent",
+        "targetHandle": "{\"fieldName\":\"input_data\",\"id\":\"ParserComponent-AssemblyMultiAgent\",\"inputTypes\":[\"DataFrame\",\"Data\"],\"type\":\"other\"}"
+      },
+      {
+        "animated": false,
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ParserComponent",
+            "id": "ParserComponent-AssemblyMultiAgent",
+            "name": "parsed_text",
+            "output_types": [
+              "Message"
+            ]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "ChatOutput-AssemblyMultiAgent",
+            "inputTypes": [
+              "Data",
+              "DataFrame",
+              "Message"
+            ],
+            "type": "other"
+          }
+        },
+        "id": "edge-ParserComponent-AssemblyMultiAgent-parsed_text-ChatOutput-AssemblyMultiAgent-input_value",
+        "selected": false,
+        "source": "ParserComponent-AssemblyMultiAgent",
+        "sourceHandle": "{\"dataType\":\"ParserComponent\",\"id\":\"ParserComponent-AssemblyMultiAgent\",\"name\":\"parsed_text\",\"output_types\":[\"Message\"]}",
+        "target": "ChatOutput-AssemblyMultiAgent",
+        "targetHandle": "{\"fieldName\":\"input_value\",\"id\":\"ChatOutput-AssemblyMultiAgent\",\"inputTypes\":[\"Data\",\"DataFrame\",\"Message\"],\"type\":\"other\"}"
+      }
+    ],
+    "nodes": [
+      {
+        "data": {
+          "id": "ChatInput-AssemblyMultiAgent",
+          "node": {
+            "base_classes": [
+              "Message"
+            ],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Get chat inputs from the Playground.",
+            "display_name": "Chat Input",
+            "documentation": "https://docs.langflow.org/chat-input-and-output",
+            "edited": false,
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "context_id",
+              "files"
+            ],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.8.4",
+            "metadata": {
+              "code_hash": "7a26c54d89ed",
+              "dependencies": {
+                "dependencies": [
+                  {
+                    "name": "lfx",
+                    "version": null
+                  }
+                ],
+                "total_dependencies": 1
+              },
+              "module": "lfx.components.input_output.chat.ChatInput"
+            },
+            "minimized": true,
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Chat Message",
+                "group_outputs": false,
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": [
+                  "Message"
+                ],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "code": {
+                "advanced": true,
+                "dynamic": true,
+                "fileTypes": [],
+                "file_path": "",
+                "info": "",
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "code",
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "from lfx.base.data.utils import IMG_FILE_TYPES, TEXT_FILE_TYPES\nfrom lfx.base.io.chat import ChatComponent\nfrom lfx.inputs.inputs import BoolInput\nfrom lfx.io import (\n    DropdownInput,\n    FileInput,\n    MessageTextInput,\n    MultilineInput,\n    Output,\n)\nfrom lfx.schema.message import Message\nfrom lfx.utils.constants import (\n    MESSAGE_SENDER_AI,\n    MESSAGE_SENDER_NAME_USER,\n    MESSAGE_SENDER_USER,\n)\n\n\nclass ChatInput(ChatComponent):\n    display_name = \"Chat Input\"\n    description = \"Get chat inputs from the Playground.\"\n    documentation: str = \"https://docs.langflow.org/chat-input-and-output\"\n    icon = \"MessagesSquare\"\n    name = \"ChatInput\"\n    minimized = True\n\n    inputs = [\n        MultilineInput(\n            name=\"input_value\",\n            display_name=\"Input Text\",\n            value=\"\",\n            info=\"Message to be passed as input.\",\n            input_types=[],\n        ),\n        BoolInput(\n            name=\"should_store_message\",\n            display_name=\"Store Messages\",\n            info=\"Store the message in the history.\",\n            value=True,\n            advanced=True,\n        ),\n        DropdownInput(\n            name=\"sender\",\n            display_name=\"Sender Type\",\n            options=[MESSAGE_SENDER_AI, MESSAGE_SENDER_USER],\n            value=MESSAGE_SENDER_USER,\n            info=\"Type of sender.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"sender_name\",\n            display_name=\"Sender Name\",\n            info=\"Name of the sender.\",\n            value=MESSAGE_SENDER_NAME_USER,\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"session_id\",\n            display_name=\"Session ID\",\n            info=\"The session ID of the chat. If empty, the current session ID parameter will be used.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"context_id\",\n            display_name=\"Context ID\",\n            info=\"The context ID of the chat. Adds an extra layer to the local memory.\",\n            value=\"\",\n            advanced=True,\n        ),\n        FileInput(\n            name=\"files\",\n            display_name=\"Files\",\n            file_types=TEXT_FILE_TYPES + IMG_FILE_TYPES,\n            info=\"Files to be sent with the message.\",\n            advanced=True,\n            is_list=True,\n            temp_file=True,\n        ),\n    ]\n    outputs = [\n        Output(display_name=\"Chat Message\", name=\"message\", method=\"message_response\"),\n    ]\n\n    async def message_response(self) -> Message:\n        # Ensure files is a list and filter out empty/None values\n        files = self.files if self.files else []\n        if files and not isinstance(files, list):\n            files = [files]\n        # Filter out None/empty values\n        files = [f for f in files if f is not None and f != \"\"]\n\n        session_id = self.session_id or self.graph.session_id or \"\"\n        message = await Message.create(\n            text=self.input_value,\n            sender=self.sender,\n            sender_name=self.sender_name,\n            session_id=session_id,\n            context_id=self.context_id,\n            files=files,\n        )\n        if session_id and isinstance(message, Message) and self.should_store_message:\n            stored_message = await self.send_message(\n                message,\n            )\n            self.message.value = stored_message\n            message = stored_message\n\n        self.status = message\n        return message\n"
+              },
+              "context_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Context ID",
+                "dynamic": false,
+                "info": "The context ID of the chat. Adds an extra layer to the local memory.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "context_id",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "files": {
+                "_input_type": "FileInput",
+                "advanced": true,
+                "display_name": "Files",
+                "dynamic": false,
+                "fileTypes": [
+                  "csv",
+                  "json",
+                  "pdf",
+                  "txt",
+                  "md",
+                  "mdx",
+                  "yaml",
+                  "yml",
+                  "xml",
+                  "html",
+                  "htm",
+                  "docx",
+                  "py",
+                  "sh",
+                  "sql",
+                  "js",
+                  "ts",
+                  "tsx",
+                  "jpg",
+                  "jpeg",
+                  "png",
+                  "bmp",
+                  "image"
+                ],
+                "file_path": "",
+                "info": "Files to be sent with the message.",
+                "list": true,
+                "list_add_label": "Add More",
+                "name": "files",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "temp_file": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "file",
+                "value": ""
+              },
+              "input_value": {
+                "_input_type": "MultilineInput",
+                "advanced": false,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Input Text",
+                "dynamic": false,
+                "info": "Message to be passed as input.",
+                "input_types": [],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "input_value",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "{\n  \"geometry\": {\n    \"nominal_diameter_mm\": 50.0,\n    \"hub_outer_diameter_mm\": 90.0,\n    \"contact_length_mm\": 30.0,\n    \"fit_code\": \"H7/s6\",\n    \"shaft_roughness_um\": 2.0,\n    \"bore_roughness_um\": 2.0\n  },\n  \"materials\": {\n    \"shaft_elastic_modulus_gpa\": 210.0,\n    \"hub_elastic_modulus_gpa\": 170.0,\n    \"shaft_poisson_ratio\": 0.3,\n    \"hub_poisson_ratio\": 0.29,\n    \"shaft_yield_strength_mpa\": 550.0,\n    \"hub_yield_strength_mpa\": 320.0,\n    \"shaft_thermal_expansion\": 1.15e-05,\n    \"hub_thermal_expansion\": 1.10e-05\n  },\n  \"operating\": {\n    \"transmitted_torque_nm\": 700.0,\n    \"axial_force_n\": 10000.0,\n    \"working_temperature_c\": 120.0,\n    \"assembly_temperature_c\": 20.0,\n    \"desired_installation_clearance_um\": 30.0,\n    \"press_friction_coefficient\": 0.12,\n    \"service_friction_coefficient\": 0.15,\n    \"equipment_force_limit_kn\": 35.0\n  }\n}\n\n"
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "dialog_inputs": {},
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "external_options": {},
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": [
+                  "Machine",
+                  "User"
+                ],
+                "options_metadata": [],
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "toggle": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "str",
+                "value": "User"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "sender_name",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "User"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "session_id",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "list_add_label": "Add More",
+                "name": "should_store_message",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "bool",
+                "value": true
+              }
+            },
+            "tool_mode": false
+          },
+          "showNode": false,
+          "type": "ChatInput"
+        },
+        "dragging": false,
+        "id": "ChatInput-AssemblyMultiAgent",
+        "measured": {
+          "height": 51,
+          "width": 192
+        },
+        "position": {
+          "x": 0,
+          "y": 420
+        },
+        "selected": false,
+        "type": "genericNode"
+      },
+      {
+        "data": {
+          "id": "PythonREPLComponent-AssemblyMultiAgent",
+          "node": {
+            "base_classes": [
+              "Data"
+            ],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Import-ready Langflow gateway for the FastAPI + LangGraph industrial multi-agent backend.",
+            "display_name": "Assembly Optimizer Multi-Agent Gateway",
+            "documentation": "http://127.0.0.1:8010/docs",
+            "edited": true,
+            "field_order": [
+              "global_imports",
+              "input_text",
+              "operation",
+              "thread_id",
+              "approval_decision",
+              "approval_comment",
+              "config_json",
+              "llm_enabled",
+              "llm_provider",
+              "llm_model",
+              "llm_api_base_url",
+              "llm_api_key",
+              "llm_temperature",
+              "llm_max_tokens",
+              "headers_json",
+              "api_key",
+              "api_key_header",
+              "api_url",
+              "timeout_seconds",
+              "python_code"
+            ],
+            "frozen": false,
+            "icon": "activity",
+            "legacy": false,
+            "lf_version": "1.8.4",
+            "metadata": {
+              "code_hash": "197da1d5446c",
+              "dependencies": {
+                "dependencies": [
+                  {
+                    "name": "langchain_experimental",
+                    "version": "0.3.4"
+                  },
+                  {
+                    "name": "lfx",
+                    "version": "0.3.4"
+                  }
+                ],
+                "total_dependencies": 2
+              },
+              "module": "custom_components.python_interpreter"
+            },
+            "minimized": false,
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Results",
+                "group_outputs": false,
+                "hidden": null,
+                "loop_types": null,
+                "method": "run_python_repl",
+                "name": "results",
+                "options": null,
+                "required_inputs": null,
+                "selected": "Data",
+                "tool_mode": true,
+                "types": [
+                  "Data"
+                ],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "code": {
+                "advanced": true,
+                "dynamic": true,
+                "fileTypes": [],
+                "file_path": "",
+                "info": "",
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "code",
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "import importlib\nfrom langchain_experimental.utilities import PythonREPL\nfrom lfx.custom.custom_component.component import Component\nfrom lfx.io import MultilineInput, Output, StrInput\nfrom lfx.schema.data import Data\nfrom lfx.schema.message import Message\n\n\nclass PythonREPLComponent(Component):\n    display_name = \"Assembly Optimizer Multi-Agent Gateway\"\n    description = \"Call the FastAPI + LangGraph assembly optimizer backend from Langflow.\"\n    documentation: str = \"http://127.0.0.1:8010/docs\"\n    icon = \"activity\"\n\n    inputs = [\n        StrInput(\n            name=\"global_imports\",\n            display_name=\"Global Imports\",\n            info=\"A comma-separated list of modules to import globally.\",\n            value=\"json,requests,pathlib\",\n            required=True,\n        ),\n        MultilineInput(\n            name=\"python_code\",\n            display_name=\"Python Code\",\n            info=\"The Python code to execute. Only modules specified in Global Imports can be used.\",\n            value=\"print('Hello, World!')\",\n            input_types=[\"Message\"],\n            tool_mode=True,\n            required=True,\n        ),\n        MultilineInput(\n            name=\"input_text\",\n            display_name=\"Request JSON\",\n            info=\"Paste analyze or multi-agent request JSON here, or connect Chat Input.\",\n            value=\"\",\n            input_types=[\"Text\", \"Message\"],\n            required=False,\n        ),\n        StrInput(\n            name=\"operation\",\n            display_name=\"Operation\",\n            info=\"Supported values: analyze, multiagent_run, multiagent_resume, multiagent_state\",\n            value=\"multiagent_run\",\n            required=True,\n        ),\n        StrInput(\n            name=\"thread_id\",\n            display_name=\"Thread ID\",\n            info=\"Optional for multiagent_run. Required for multiagent_resume and multiagent_state.\",\n            value=\"\",\n            required=False,\n        ),\n        StrInput(\n            name=\"approval_decision\",\n            display_name=\"Approval Decision\",\n            info=\"Used for multiagent_resume. Supported values: approve, reject\",\n            value=\"approve\",\n            required=False,\n        ),\n        StrInput(\n            name=\"approval_comment\",\n            display_name=\"Approval Comment\",\n            info=\"Optional comment for multiagent_resume.\",\n            value=\"\",\n            required=False,\n        ),\n        MultilineInput(\n            name=\"config_json\",\n            display_name=\"Config JSON\",\n            info=\"Optional runtime config overrides merged into the backend request config field.\",\n            value=\"\",\n            input_types=[\"Text\", \"Message\"],\n            required=False,\n        ),\n        StrInput(\n            name=\"llm_enabled\",\n            display_name=\"LLM Enabled\",\n            info=\"Set true to enable LLM specialists. Supported values: true, false.\",\n            value=\"false\",\n            required=True,\n        ),\n        StrInput(\n            name=\"llm_provider\",\n            display_name=\"LLM Provider\",\n            info=\"Supported values: mock, openai_compatible\",\n            value=\"openai_compatible\",\n            required=True,\n        ),\n        StrInput(\n            name=\"llm_model\",\n            display_name=\"LLM Model\",\n            info=\"Model name for the LLM specialist layer.\",\n            value=\"\",\n            required=False,\n        ),\n        StrInput(\n            name=\"llm_api_base_url\",\n            display_name=\"LLM API Base URL\",\n            info=\"Base URL for the LLM provider, for example https://api.openai.com/v1\",\n            value=\"https://api.openai.com/v1\",\n            required=False,\n        ),\n        StrInput(\n            name=\"llm_api_key\",\n            display_name=\"LLM API Key\",\n            info=\"Optional LLM API key. Stored in the request config.llm.api_key field.\",\n            value=\"\",\n            required=False,\n        ),\n        StrInput(\n            name=\"llm_temperature\",\n            display_name=\"LLM Temperature\",\n            info=\"Temperature for specialist reasoning.\",\n            value=\"0.0\",\n            required=True,\n        ),\n        StrInput(\n            name=\"llm_max_tokens\",\n            display_name=\"LLM Max Tokens\",\n            info=\"Max tokens per specialist call.\",\n            value=\"700\",\n            required=True,\n        ),\n        MultilineInput(\n            name=\"headers_json\",\n            display_name=\"Headers JSON\",\n            info=\"Optional extra HTTP headers. Example: {\\\"X-API-Key\\\": \\\"demo-key\\\"}\",\n            value=\"\",\n            input_types=[\"Text\", \"Message\"],\n            required=False,\n        ),\n        StrInput(\n            name=\"api_key\",\n            display_name=\"API Key\",\n            info=\"Optional convenience field. When set, it is added to the configured header below.\",\n            value=\"\",\n            required=False,\n        ),\n        StrInput(\n            name=\"api_key_header\",\n            display_name=\"API Key Header\",\n            info=\"Header name for the API Key field. Defaults to X-API-Key. Use Authorization if your gateway expects Bearer tokens.\",\n            value=\"X-API-Key\",\n            required=True,\n        ),\n        StrInput(\n            name=\"api_url\",\n            display_name=\"API URL\",\n            info=\"FastAPI endpoint for the assembly optimizer backend.\",\n            value=\"http://127.0.0.1:8010\",\n            required=True,\n        ),\n        StrInput(\n            name=\"timeout_seconds\",\n            display_name=\"Timeout Seconds\",\n            info=\"HTTP timeout for backend calls.\",\n            value=\"300\",\n            required=True,\n        ),\n    ]\n\n    outputs = [\n        Output(\n            display_name=\"Results\",\n            name=\"results\",\n            type_=Data,\n            method=\"run_python_repl\",\n        ),\n    ]\n\n    def get_globals(self, global_imports: str | list[str]) -> dict:\n        global_dict = {}\n        if isinstance(global_imports, str):\n            modules = [module.strip() for module in global_imports.split(\",\")]\n        elif isinstance(global_imports, list):\n            modules = global_imports\n        else:\n            raise TypeError(\"global_imports must be string or list\")\n        for module in modules:\n            if not module:\n                continue\n            imported = importlib.import_module(module)\n            global_dict[imported.__name__] = imported\n        return global_dict\n\n    def run_python_repl(self) -> Data:\n        try:\n            globals_ = self.get_globals(self.global_imports)\n\n            text = self.input_text\n            input_files = []\n            if isinstance(text, Message):\n                input_files = [str(file_path) for file_path in (text.files or []) if file_path]\n                text = text.text\n\n            globals_[\"input_text\"] = str(text or \"\").strip()\n            globals_[\"input_files\"] = input_files\n            globals_[\"operation\"] = str(self.operation or \"multiagent_run\").strip()\n            globals_[\"thread_id\"] = str(self.thread_id or \"\").strip()\n            globals_[\"approval_decision\"] = str(self.approval_decision or \"approve\").strip()\n            globals_[\"approval_comment\"] = str(self.approval_comment or \"\").strip()\n            globals_[\"config_json\"] = str(self.config_json or \"\").strip()\n            globals_[\"llm_enabled\"] = str(self.llm_enabled or \"false\").strip()\n            globals_[\"llm_provider\"] = str(self.llm_provider or \"\").strip()\n            globals_[\"llm_model\"] = str(self.llm_model or \"\").strip()\n            globals_[\"llm_api_base_url\"] = str(self.llm_api_base_url or \"\").strip()\n            globals_[\"llm_api_key\"] = str(self.llm_api_key or \"\").strip()\n            globals_[\"llm_temperature\"] = str(self.llm_temperature or \"0.0\").strip()\n            globals_[\"llm_max_tokens\"] = str(self.llm_max_tokens or \"700\").strip()\n            globals_[\"headers_json\"] = str(self.headers_json or \"\").strip()\n            globals_[\"api_key\"] = str(self.api_key or \"\").strip()\n            globals_[\"api_key_header\"] = str(self.api_key_header or \"X-API-Key\").strip()\n            globals_[\"api_url\"] = str(self.api_url or \"\").strip()\n            globals_[\"timeout_seconds\"] = str(self.timeout_seconds or \"300\").strip()\n\n            python_repl = PythonREPL(_globals=globals_)\n            result = python_repl.run(self.python_code)\n            return Data(data={\"result\": result.strip() if result else \"\"})\n        except Exception as exc:\n            return Data(data={\"error\": str(exc)})\n\n    def build(self):\n        return self.run_python_repl()\n"
+              },
+              "global_imports": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "Global Imports",
+                "dynamic": false,
+                "info": "A comma-separated list of modules to import globally.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "global_imports",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "json,requests,pathlib"
+              },
+              "input_text": {
+                "_input_type": "MultilineInput",
+                "advanced": false,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Request JSON",
+                "dynamic": false,
+                "info": "Paste analyze or multi-agent request JSON here, or connect Chat Input.",
+                "input_types": [
+                  "Text",
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "input_text",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "{\n  \"geometry\": {\n    \"nominal_diameter_mm\": 50.0,\n    \"hub_outer_diameter_mm\": 90.0,\n    \"contact_length_mm\": 30.0,\n    \"fit_code\": \"H7/s6\",\n    \"shaft_roughness_um\": 2.0,\n    \"bore_roughness_um\": 2.0\n  },\n  \"materials\": {\n    \"shaft_elastic_modulus_gpa\": 210.0,\n    \"hub_elastic_modulus_gpa\": 170.0,\n    \"shaft_poisson_ratio\": 0.3,\n    \"hub_poisson_ratio\": 0.29,\n    \"shaft_yield_strength_mpa\": 550.0,\n    \"hub_yield_strength_mpa\": 320.0,\n    \"shaft_thermal_expansion\": 1.15e-05,\n    \"hub_thermal_expansion\": 1.10e-05\n  },\n  \"operating\": {\n    \"transmitted_torque_nm\": 700.0,\n    \"axial_force_n\": 10000.0,\n    \"working_temperature_c\": 120.0,\n    \"assembly_temperature_c\": 20.0,\n    \"desired_installation_clearance_um\": 30.0,\n    \"press_friction_coefficient\": 0.12,\n    \"service_friction_coefficient\": 0.15,\n    \"equipment_force_limit_kn\": 35.0\n  }\n}\n\n"
+              },
+              "python_code": {
+                "_input_type": "MultilineInput",
+                "advanced": true,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Python Code",
+                "dynamic": false,
+                "info": "The Python code to execute. Only modules specified in Global Imports can be used.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "python_code",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": true,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "import json\nimport pathlib\nimport requests\n\nDEFAULT_REQUEST = {\n  \"geometry\": {\n    \"nominal_diameter_mm\": 50.0,\n    \"hub_outer_diameter_mm\": 90.0,\n    \"contact_length_mm\": 30.0,\n    \"fit_code\": \"H7/s6\",\n    \"shaft_roughness_um\": 2.0,\n    \"bore_roughness_um\": 2.0\n  },\n  \"materials\": {\n    \"shaft_elastic_modulus_gpa\": 210.0,\n    \"hub_elastic_modulus_gpa\": 170.0,\n    \"shaft_poisson_ratio\": 0.3,\n    \"hub_poisson_ratio\": 0.29,\n    \"shaft_yield_strength_mpa\": 550.0,\n    \"hub_yield_strength_mpa\": 320.0,\n    \"shaft_thermal_expansion\": 1.15e-05,\n    \"hub_thermal_expansion\": 1.1e-05\n  },\n  \"operating\": {\n    \"transmitted_torque_nm\": 700.0,\n    \"axial_force_n\": 10000.0,\n    \"working_temperature_c\": 120.0,\n    \"assembly_temperature_c\": 20.0,\n    \"desired_installation_clearance_um\": 30.0,\n    \"press_friction_coefficient\": 0.12,\n    \"service_friction_coefficient\": 0.15,\n    \"equipment_force_limit_kn\": 35.0\n  }\n}\n\n\ndef _strip_code_fence(text):\n    value = str(text or \"\").strip()\n    if value.startswith(\"```\"):\n        parts = value.split(\"\\n\")\n        if parts:\n            parts = parts[1:]\n        if parts and parts[-1].strip() == \"```\":\n            parts = parts[:-1]\n        value = \"\\n\".join(parts).strip()\n    return value\n\n\ndef _load_request():\n    request_text = _strip_code_fence(globals().get(\"input_text\", \"\"))\n    input_files = globals().get(\"input_files\", []) or []\n    if not request_text:\n        for raw_path in input_files:\n            path = pathlib.Path(str(raw_path))\n            if not path.exists() or path.suffix.lower() != \".json\":\n                continue\n            for encoding in (\"utf-8-sig\", \"utf-8\", \"gbk\"):\n                try:\n                    request_text = path.read_text(encoding=encoding).strip()\n                    break\n                except UnicodeDecodeError:\n                    continue\n            if request_text:\n                break\n    if not request_text:\n        return DEFAULT_REQUEST\n    return json.loads(request_text)\n\n\ndef _parse_json(raw_text):\n    text = str(raw_text or \"\").strip()\n    if not text:\n        return None\n    return json.loads(text)\n\n\ndef _headers():\n    headers = {}\n    parsed = _parse_json(globals().get(\"headers_json\", \"\"))\n    if parsed:\n        headers.update({str(key): str(value) for key, value in parsed.items()})\n    api_key = str(globals().get(\"api_key\", \"\") or \"\").strip()\n    header_name = str(globals().get(\"api_key_header\", \"X-API-Key\") or \"X-API-Key\").strip()\n    if api_key:\n        if header_name.lower() == \"authorization\" and not api_key.lower().startswith(\"bearer \"):\n            headers[header_name] = f\"Bearer {api_key}\"\n        else:\n            headers[header_name] = api_key\n    return headers\n\n\ndef _merge_config(payload):\n    config_override = dict(_parse_json(globals().get(\"config_json\", \"\")) or {})\n    llm_enabled = str(globals().get(\"llm_enabled\", \"false\") or \"false\").strip().lower() in (\"1\", \"true\", \"yes\", \"on\", \"enabled\")\n    llm_payload = {\n        \"enabled\": llm_enabled,\n        \"provider\": str(globals().get(\"llm_provider\", \"\") or \"\").strip(),\n        \"model\": str(globals().get(\"llm_model\", \"\") or \"\").strip(),\n        \"api_base_url\": str(globals().get(\"llm_api_base_url\", \"\") or \"\").strip(),\n        \"api_key\": str(globals().get(\"llm_api_key\", \"\") or \"\").strip(),\n        \"temperature\": float(globals().get(\"llm_temperature\", \"0.0\") or 0.0),\n        \"max_tokens\": int(float(globals().get(\"llm_max_tokens\", \"700\") or 700)),\n    }\n    if llm_enabled or llm_payload[\"model\"] or llm_payload[\"api_key\"]:\n        merged_llm = dict(config_override.get(\"llm\") or {})\n        merged_llm.update({key: value for key, value in llm_payload.items() if value != \"\"})\n        config_override[\"llm\"] = merged_llm\n    if not config_override:\n        return payload\n    merged = dict(payload.get(\"config\") or {})\n    merged.update(config_override)\n    next_payload = dict(payload)\n    next_payload[\"config\"] = merged\n    return next_payload\n\n\noperation = str(globals().get(\"operation\", \"multiagent_run\") or \"multiagent_run\").strip().lower()\nthread_id = str(globals().get(\"thread_id\", \"\") or \"\").strip()\napproval_decision = str(globals().get(\"approval_decision\", \"approve\") or \"approve\").strip().lower()\napproval_comment = str(globals().get(\"approval_comment\", \"\") or \"\").strip()\napi_url = str(globals().get(\"api_url\", \"http://127.0.0.1:8010\") or \"http://127.0.0.1:8010\").rstrip(\"/\")\ntimeout_seconds = float(globals().get(\"timeout_seconds\", \"300\") or 300)\nheaders = _headers()\n\nif operation == \"analyze\":\n    request_payload = _merge_config(_load_request())\n    response = requests.post(f\"{api_url}/analyze\", json=request_payload, headers=headers, timeout=timeout_seconds)\nelif operation == \"multiagent_run\":\n    request_payload = _merge_config(_load_request())\n    if thread_id:\n        request_payload = dict(request_payload)\n        request_payload[\"thread_id\"] = thread_id\n    response = requests.post(f\"{api_url}/multiagent/runs\", json=request_payload, headers=headers, timeout=timeout_seconds)\nelif operation == \"multiagent_resume\":\n    if not thread_id:\n        raise ValueError(\"thread_id is required for multiagent_resume\")\n    request_payload = {\n        \"decision\": approval_decision,\n        \"comment\": approval_comment,\n    }\n    config_override = _parse_json(globals().get(\"config_json\", \"\"))\n    if config_override:\n        request_payload[\"config\"] = config_override\n    response = requests.post(\n        f\"{api_url}/multiagent/runs/{thread_id}/resume\",\n        json=request_payload,\n        headers=headers,\n        timeout=timeout_seconds,\n    )\nelif operation == \"multiagent_state\":\n    if not thread_id:\n        raise ValueError(\"thread_id is required for multiagent_state\")\n    params = {}\n    config_override = _parse_json(globals().get(\"config_json\", \"\"))\n    if config_override and config_override.get(\"checkpoint_db_path\"):\n        params[\"checkpoint_db_path\"] = config_override[\"checkpoint_db_path\"]\n    response = requests.get(\n        f\"{api_url}/multiagent/runs/{thread_id}\",\n        params=params,\n        headers=headers,\n        timeout=timeout_seconds,\n    )\nelse:\n    raise ValueError(\"Unsupported operation. Use analyze, multiagent_run, multiagent_resume, or multiagent_state.\")\n\nresponse.raise_for_status()\nprint(json.dumps(response.json(), ensure_ascii=False, indent=2))\n"
+              },
+              "config_json": {
+                "_input_type": "MultilineInput",
+                "advanced": true,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Config JSON",
+                "dynamic": false,
+                "info": "Optional runtime config overrides. Example keys: checkpoint_db_path, operations_db_path, dispatch_dir, history_db_path, output_dir.",
+                "input_types": [
+                  "Text",
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "config_json",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "operation": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "Operation",
+                "dynamic": false,
+                "info": "Supported values: analyze, multiagent_run, multiagent_resume, multiagent_state",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "operation",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "multiagent_run"
+              },
+              "thread_id": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "Thread ID",
+                "dynamic": false,
+                "info": "Optional for multiagent_run. Required for multiagent_resume and multiagent_state.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "thread_id",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "approval_decision": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "Approval Decision",
+                "dynamic": false,
+                "info": "Used for multiagent_resume. Supported values: approve, reject",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "approval_decision",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "approve"
+              },
+              "approval_comment": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "Approval Comment",
+                "dynamic": false,
+                "info": "Optional comment for multiagent_resume.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "approval_comment",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "headers_json": {
+                "_input_type": "MultilineInput",
+                "advanced": true,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Headers JSON",
+                "dynamic": false,
+                "info": "Optional extra HTTP headers. Example: {\"X-API-Key\": \"demo-key\"}",
+                "input_types": [
+                  "Text",
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "headers_json",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "llm_enabled": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "LLM Enabled",
+                "dynamic": false,
+                "info": "Set true to enable LLM specialists. Supported values: true, false.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_enabled",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "false"
+              },
+              "llm_provider": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "LLM Provider",
+                "dynamic": false,
+                "info": "Supported values: mock, openai_compatible",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_provider",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "openai_compatible"
+              },
+              "llm_model": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "LLM Model",
+                "dynamic": false,
+                "info": "Model name for the LLM specialist layer.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_model",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "llm_api_base_url": {
+                "_input_type": "StrInput",
+                "advanced": true,
+                "display_name": "LLM API Base URL",
+                "dynamic": false,
+                "info": "Base URL for the LLM provider, for example https://api.openai.com/v1",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_api_base_url",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "https://api.openai.com/v1"
+              },
+              "llm_api_key": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "LLM API Key",
+                "dynamic": false,
+                "info": "Optional LLM API key. Stored in the request config.llm.api_key field.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_api_key",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "llm_temperature": {
+                "_input_type": "StrInput",
+                "advanced": true,
+                "display_name": "LLM Temperature",
+                "dynamic": false,
+                "info": "Temperature for specialist reasoning.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_temperature",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "0.0"
+              },
+              "llm_max_tokens": {
+                "_input_type": "StrInput",
+                "advanced": true,
+                "display_name": "LLM Max Tokens",
+                "dynamic": false,
+                "info": "Max tokens per specialist call.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "llm_max_tokens",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "700"
+              },
+              "api_key": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "API Key",
+                "dynamic": false,
+                "info": "Optional convenience field. When set, it is added to the configured header below.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "api_key",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "api_key_header": {
+                "_input_type": "StrInput",
+                "advanced": true,
+                "display_name": "API Key Header",
+                "dynamic": false,
+                "info": "Header name for the API Key field. Use Authorization for Bearer tokens.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "api_key_header",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "X-API-Key"
+              },
+              "api_url": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "API URL",
+                "dynamic": false,
+                "info": "FastAPI endpoint for the assembly optimizer backend.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "api_url",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "http://127.0.0.1:8010"
+              },
+              "timeout_seconds": {
+                "_input_type": "StrInput",
+                "advanced": true,
+                "display_name": "Timeout Seconds",
+                "dynamic": false,
+                "info": "HTTP timeout for backend calls.",
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "timeout_seconds",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "300"
+              }
+            },
+            "tool_mode": false
+          },
+          "showNode": true,
+          "type": "PythonREPLComponent"
+        },
+        "dragging": false,
+        "id": "PythonREPLComponent-AssemblyMultiAgent",
+        "measured": {
+          "height": 385,
+          "width": 320
+        },
+        "position": {
+          "x": 430,
+          "y": 420
+        },
+        "selected": false,
+        "type": "genericNode"
+      },
+      {
+        "data": {
+          "id": "ParserComponent-AssemblyMultiAgent",
+          "node": {
+            "base_classes": [
+              "Message"
+            ],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Converts the backend JSON response into a chat message.",
+            "display_name": "Gateway JSON To Message",
+            "documentation": "https://docs.langflow.org/parser",
+            "edited": false,
+            "field_order": [
+              "input_data",
+              "mode",
+              "pattern",
+              "sep"
+            ],
+            "frozen": false,
+            "icon": "braces",
+            "legacy": false,
+            "lf_version": "1.8.4",
+            "metadata": {
+              "code_hash": "3cda25c3f7b5",
+              "dependencies": {
+                "dependencies": [
+                  {
+                    "name": "lfx",
+                    "version": null
+                  }
+                ],
+                "total_dependencies": 1
+              },
+              "module": "lfx.components.processing.parser.ParserComponent"
+            },
+            "minimized": false,
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Parsed Text",
+                "group_outputs": false,
+                "method": "parse_combined_text",
+                "name": "parsed_text",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": [
+                  "Message"
+                ],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "code": {
+                "advanced": true,
+                "dynamic": true,
+                "fileTypes": [],
+                "file_path": "",
+                "info": "",
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "code",
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "from lfx.custom.custom_component.component import Component\nfrom lfx.helpers.data import safe_convert\nfrom lfx.inputs.inputs import BoolInput, HandleInput, MessageTextInput, MultilineInput, TabInput\nfrom lfx.schema.data import Data\nfrom lfx.schema.dataframe import DataFrame\nfrom lfx.schema.message import Message\nfrom lfx.template.field.base import Output\n\n\nclass ParserComponent(Component):\n    display_name = \"Parser\"\n    description = \"Extracts text using a template.\"\n    documentation: str = \"https://docs.langflow.org/parser\"\n    icon = \"braces\"\n\n    inputs = [\n        HandleInput(\n            name=\"input_data\",\n            display_name=\"Data or DataFrame\",\n            input_types=[\"DataFrame\", \"Data\"],\n            info=\"Accepts either a DataFrame or a Data object.\",\n            required=True,\n        ),\n        TabInput(\n            name=\"mode\",\n            display_name=\"Mode\",\n            options=[\"Parser\", \"Stringify\"],\n            value=\"Parser\",\n            info=\"Convert into raw string instead of using a template.\",\n            real_time_refresh=True,\n        ),\n        MultilineInput(\n            name=\"pattern\",\n            display_name=\"Template\",\n            info=(\n                \"Use variables within curly brackets to extract column values for DataFrames \"\n                \"or key values for Data.\"\n                \"For example: `Name: {Name}, Age: {Age}, Country: {Country}`\"\n            ),\n            value=\"Text: {text}\",  # Example default\n            dynamic=True,\n            show=True,\n            required=True,\n        ),\n        MessageTextInput(\n            name=\"sep\",\n            display_name=\"Separator\",\n            advanced=True,\n            value=\"\\n\",\n            info=\"String used to separate rows/items.\",\n        ),\n    ]\n\n    outputs = [\n        Output(\n            display_name=\"Parsed Text\",\n            name=\"parsed_text\",\n            info=\"Formatted text output.\",\n            method=\"parse_combined_text\",\n        ),\n    ]\n\n    def update_build_config(self, build_config, field_value, field_name=None):\n        \"\"\"Dynamically hide/show `template` and enforce requirement based on `stringify`.\"\"\"\n        if field_name == \"mode\":\n            build_config[\"pattern\"][\"show\"] = self.mode == \"Parser\"\n            build_config[\"pattern\"][\"required\"] = self.mode == \"Parser\"\n            if field_value:\n                clean_data = BoolInput(\n                    name=\"clean_data\",\n                    display_name=\"Clean Data\",\n                    info=(\n                        \"Enable to clean the data by removing empty rows and lines \"\n                        \"in each cell of the DataFrame/ Data object.\"\n                    ),\n                    value=True,\n                    advanced=True,\n                    required=False,\n                )\n                build_config[\"clean_data\"] = clean_data.to_dict()\n            else:\n                build_config.pop(\"clean_data\", None)\n\n        return build_config\n\n    def _clean_args(self):\n        \"\"\"Prepare arguments based on input type.\"\"\"\n        input_data = self.input_data\n\n        match input_data:\n            case list() if all(isinstance(item, Data) for item in input_data):\n                msg = \"List of Data objects is not supported.\"\n                raise ValueError(msg)\n            case DataFrame():\n                return input_data, None\n            case Data():\n                return None, input_data\n            case dict() if \"data\" in input_data:\n                try:\n                    if \"columns\" in input_data:  # Likely a DataFrame\n                        return DataFrame.from_dict(input_data), None\n                    # Likely a Data object\n                    return None, Data(**input_data)\n                except (TypeError, ValueError, KeyError) as e:\n                    msg = f\"Invalid structured input provided: {e!s}\"\n                    raise ValueError(msg) from e\n            case _:\n                msg = f\"Unsupported input type: {type(input_data)}. Expected DataFrame or Data.\"\n                raise ValueError(msg)\n\n    def parse_combined_text(self) -> Message:\n        \"\"\"Parse all rows/items into a single text or convert input to string if `stringify` is enabled.\"\"\"\n        # Early return for stringify option\n        if self.mode == \"Stringify\":\n            return self.convert_to_string()\n\n        df, data = self._clean_args()\n\n        lines = []\n        if df is not None:\n            for _, row in df.iterrows():\n                formatted_text = self.pattern.format(**row.to_dict())\n                lines.append(formatted_text)\n        elif data is not None:\n            # Use format_map with a dict that returns default_value for missing keys\n            class DefaultDict(dict):\n                def __missing__(self, key):\n                    return data.default_value or \"\"\n\n            formatted_text = self.pattern.format_map(DefaultDict(data.data))\n            lines.append(formatted_text)\n\n        combined_text = self.sep.join(lines)\n        self.status = combined_text\n        return Message(text=combined_text)\n\n    def convert_to_string(self) -> Message:\n        \"\"\"Convert input data to string with proper error handling.\"\"\"\n        result = \"\"\n        if isinstance(self.input_data, list):\n            result = \"\\n\".join([safe_convert(item, clean_data=self.clean_data or False) for item in self.input_data])\n        else:\n            result = safe_convert(self.input_data or False)\n        self.log(f\"Converted to string with length: {len(result)}\")\n\n        message = Message(text=result)\n        self.status = message\n        return message\n"
+              },
+              "input_data": {
+                "_input_type": "HandleInput",
+                "advanced": false,
+                "display_name": "Data or DataFrame",
+                "dynamic": false,
+                "info": "Accepts either a DataFrame or a Data object.",
+                "input_types": [
+                  "DataFrame",
+                  "Data"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "name": "input_data",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "other",
+                "value": ""
+              },
+              "mode": {
+                "_input_type": "TabInput",
+                "advanced": false,
+                "display_name": "Mode",
+                "dynamic": false,
+                "info": "Convert into raw string instead of using a template.",
+                "name": "mode",
+                "options": [
+                  "Parser",
+                  "Stringify"
+                ],
+                "override_skip": false,
+                "placeholder": "",
+                "real_time_refresh": true,
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "tab",
+                "value": "Parser"
+              },
+              "pattern": {
+                "_input_type": "MultilineInput",
+                "advanced": false,
+                "ai_enabled": false,
+                "copy_field": false,
+                "display_name": "Template",
+                "dynamic": true,
+                "info": "Use variables within curly brackets to extract column values for DataFrames or key values for Data.For example: `Name: {Name}, Age: {Age}, Country: {Country}`",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "multiline": true,
+                "name": "pattern",
+                "override_skip": false,
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "{result}"
+              },
+              "sep": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Separator",
+                "dynamic": false,
+                "info": "String used to separate rows/items.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "sep",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "\n"
+              }
+            },
+            "tool_mode": false
+          },
+          "showNode": true,
+          "type": "ParserComponent"
+        },
+        "dragging": false,
+        "id": "ParserComponent-AssemblyMultiAgent",
+        "measured": {
+          "height": 329,
+          "width": 320
+        },
+        "position": {
+          "x": 860,
+          "y": 420
+        },
+        "selected": false,
+        "type": "genericNode"
+      },
+      {
+        "data": {
+          "id": "ChatOutput-AssemblyMultiAgent",
+          "node": {
+            "base_classes": [
+              "Message"
+            ],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Display a chat message in the Playground.",
+            "display_name": "Chat Output",
+            "documentation": "https://docs.langflow.org/chat-input-and-output",
+            "edited": false,
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "context_id",
+              "data_template",
+              "clean_data"
+            ],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.8.4",
+            "metadata": {
+              "code_hash": "8c87e536cca4",
+              "dependencies": {
+                "dependencies": [
+                  {
+                    "name": "orjson",
+                    "version": "3.10.15"
+                  },
+                  {
+                    "name": "fastapi",
+                    "version": "0.135.1"
+                  },
+                  {
+                    "name": "lfx",
+                    "version": null
+                  }
+                ],
+                "total_dependencies": 3
+              },
+              "module": "lfx.components.input_output.chat_output.ChatOutput"
+            },
+            "minimized": true,
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Output Message",
+                "group_outputs": false,
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": [
+                  "Message"
+                ],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "clean_data": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Basic Clean Data",
+                "dynamic": false,
+                "info": "Whether to clean data before converting to string.",
+                "list": false,
+                "list_add_label": "Add More",
+                "name": "clean_data",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "bool",
+                "value": true
+              },
+              "code": {
+                "advanced": true,
+                "dynamic": true,
+                "fileTypes": [],
+                "file_path": "",
+                "info": "",
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "code",
+                "password": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "from collections.abc import Generator\nfrom typing import Any\n\nimport orjson\nfrom fastapi.encoders import jsonable_encoder\n\nfrom lfx.base.io.chat import ChatComponent\nfrom lfx.helpers.data import safe_convert\nfrom lfx.inputs.inputs import BoolInput, DropdownInput, HandleInput, MessageTextInput\nfrom lfx.schema.data import Data\nfrom lfx.schema.dataframe import DataFrame\nfrom lfx.schema.message import Message\nfrom lfx.schema.properties import Source\nfrom lfx.template.field.base import Output\nfrom lfx.utils.constants import (\n    MESSAGE_SENDER_AI,\n    MESSAGE_SENDER_NAME_AI,\n    MESSAGE_SENDER_USER,\n)\n\n\nclass ChatOutput(ChatComponent):\n    display_name = \"Chat Output\"\n    description = \"Display a chat message in the Playground.\"\n    documentation: str = \"https://docs.langflow.org/chat-input-and-output\"\n    icon = \"MessagesSquare\"\n    name = \"ChatOutput\"\n    minimized = True\n\n    inputs = [\n        HandleInput(\n            name=\"input_value\",\n            display_name=\"Inputs\",\n            info=\"Message to be passed as output.\",\n            input_types=[\"Data\", \"DataFrame\", \"Message\"],\n            required=True,\n        ),\n        BoolInput(\n            name=\"should_store_message\",\n            display_name=\"Store Messages\",\n            info=\"Store the message in the history.\",\n            value=True,\n            advanced=True,\n        ),\n        DropdownInput(\n            name=\"sender\",\n            display_name=\"Sender Type\",\n            options=[MESSAGE_SENDER_AI, MESSAGE_SENDER_USER],\n            value=MESSAGE_SENDER_AI,\n            advanced=True,\n            info=\"Type of sender.\",\n        ),\n        MessageTextInput(\n            name=\"sender_name\",\n            display_name=\"Sender Name\",\n            info=\"Name of the sender.\",\n            value=MESSAGE_SENDER_NAME_AI,\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"session_id\",\n            display_name=\"Session ID\",\n            info=\"The session ID of the chat. If empty, the current session ID parameter will be used.\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"context_id\",\n            display_name=\"Context ID\",\n            info=\"The context ID of the chat. Adds an extra layer to the local memory.\",\n            value=\"\",\n            advanced=True,\n        ),\n        MessageTextInput(\n            name=\"data_template\",\n            display_name=\"Data Template\",\n            value=\"{text}\",\n            advanced=True,\n            info=\"Template to convert Data to Text. If left empty, it will be dynamically set to the Data's text key.\",\n        ),\n        BoolInput(\n            name=\"clean_data\",\n            display_name=\"Basic Clean Data\",\n            value=True,\n            advanced=True,\n            info=\"Whether to clean data before converting to string.\",\n        ),\n    ]\n    outputs = [\n        Output(\n            display_name=\"Output Message\",\n            name=\"message\",\n            method=\"message_response\",\n        ),\n    ]\n\n    def _build_source(self, id_: str | None, display_name: str | None, source: str | None) -> Source:\n        source_dict = {}\n        if id_:\n            source_dict[\"id\"] = id_\n        if display_name:\n            source_dict[\"display_name\"] = display_name\n        if source:\n            # Handle case where source is a ChatOpenAI object\n            if hasattr(source, \"model_name\"):\n                source_dict[\"source\"] = source.model_name\n            elif hasattr(source, \"model\"):\n                source_dict[\"source\"] = str(source.model)\n            else:\n                source_dict[\"source\"] = str(source)\n        return Source(**source_dict)\n\n    async def message_response(self) -> Message:\n        # First convert the input to string if needed\n        text = self.convert_to_string()\n\n        # Get source properties\n        source, _, display_name, source_id = self.get_properties_from_source_component()\n\n        # Create or use existing Message object\n        if isinstance(self.input_value, Message) and not self.is_connected_to_chat_input():\n            message = self.input_value\n            # Update message properties\n            message.text = text\n            # Preserve existing session_id from the incoming message if it exists\n            existing_session_id = message.session_id\n        else:\n            message = Message(text=text)\n            existing_session_id = None\n\n        # Set message properties\n        message.sender = self.sender\n        message.sender_name = self.sender_name\n        # Preserve session_id from incoming message, or use component/graph session_id\n        message.session_id = (\n            self.session_id or existing_session_id or (self.graph.session_id if hasattr(self, \"graph\") else None) or \"\"\n        )\n        message.context_id = self.context_id\n        message.flow_id = self.graph.flow_id if hasattr(self, \"graph\") else None\n        message.properties.source = self._build_source(source_id, display_name, source)\n\n        # Store message if needed\n        if message.session_id and self.should_store_message:\n            stored_message = await self.send_message(message)\n            self.message.value = stored_message\n            message = stored_message\n\n        self.status = message\n        return message\n\n    def _serialize_data(self, data: Data) -> str:\n        \"\"\"Serialize Data object to JSON string.\"\"\"\n        # Convert data.data to JSON-serializable format\n        serializable_data = jsonable_encoder(data.data)\n        # Serialize with orjson, enabling pretty printing with indentation\n        json_bytes = orjson.dumps(serializable_data, option=orjson.OPT_INDENT_2)\n        # Convert bytes to string and wrap in Markdown code blocks\n        return \"```json\\n\" + json_bytes.decode(\"utf-8\") + \"\\n```\"\n\n    def _validate_input(self) -> None:\n        \"\"\"Validate the input data and raise ValueError if invalid.\"\"\"\n        if self.input_value is None:\n            msg = \"Input data cannot be None\"\n            raise ValueError(msg)\n        if isinstance(self.input_value, list) and not all(\n            isinstance(item, Message | Data | DataFrame | str) for item in self.input_value\n        ):\n            invalid_types = [\n                type(item).__name__\n                for item in self.input_value\n                if not isinstance(item, Message | Data | DataFrame | str)\n            ]\n            msg = f\"Expected Data or DataFrame or Message or str, got {invalid_types}\"\n            raise TypeError(msg)\n        if not isinstance(\n            self.input_value,\n            Message | Data | DataFrame | str | list | Generator | type(None),\n        ):\n            type_name = type(self.input_value).__name__\n            msg = f\"Expected Data or DataFrame or Message or str, Generator or None, got {type_name}\"\n            raise TypeError(msg)\n\n    def convert_to_string(self) -> str | Generator[Any, None, None]:\n        \"\"\"Convert input data to string with proper error handling.\"\"\"\n        self._validate_input()\n        if isinstance(self.input_value, list):\n            clean_data: bool = getattr(self, \"clean_data\", False)\n            return \"\\n\".join([safe_convert(item, clean_data=clean_data) for item in self.input_value])\n        if isinstance(self.input_value, Generator):\n            return self.input_value\n        return safe_convert(self.input_value)\n"
+              },
+              "context_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Context ID",
+                "dynamic": false,
+                "info": "The context ID of the chat. Adds an extra layer to the local memory.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "context_id",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "data_template": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Data Template",
+                "dynamic": false,
+                "info": "Template to convert Data to Text. If left empty, it will be dynamically set to the Data's text key.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "data_template",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "{text}"
+              },
+              "input_value": {
+                "_input_type": "HandleInput",
+                "advanced": false,
+                "display_name": "Inputs",
+                "dynamic": false,
+                "info": "Message to be passed as output.",
+                "input_types": [
+                  "Data",
+                  "DataFrame",
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "name": "input_value",
+                "override_skip": false,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "other",
+                "value": ""
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "dialog_inputs": {},
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "external_options": {},
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": [
+                  "Machine",
+                  "User"
+                ],
+                "options_metadata": [],
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "toggle": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "str",
+                "value": "Machine"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "sender_name",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": "Assembly Multi-Agent"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "session_id",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "track_in_telemetry": false,
+                "type": "str",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "list_add_label": "Add More",
+                "name": "should_store_message",
+                "override_skip": false,
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "track_in_telemetry": true,
+                "type": "bool",
+                "value": true
+              }
+            },
+            "tool_mode": false
+          },
+          "showNode": false,
+          "type": "ChatOutput"
+        },
+        "dragging": false,
+        "id": "ChatOutput-AssemblyMultiAgent",
+        "measured": {
+          "height": 51,
+          "width": 192
+        },
+        "position": {
+          "x": 1290,
+          "y": 420
+        },
+        "selected": false,
+        "type": "genericNode"
+      }
+    ],
+    "viewport": {
+      "x": 500.0,
+      "y": 200.0,
+      "zoom": 0.8
+    }
+  },
+  "description": "Import-ready Langflow flow for the FastAPI + LangGraph industrial multi-agent assembly optimizer.",
+  "endpoint_name": null,
+  "id": "1b4313b1-e821-47a1-aa55-36da4e3bfd8e",
+  "is_component": false,
+  "last_tested_version": "1.8.4",
+  "locked": false,
+  "name": "Assembly Optimizer - Multi-Agent Gateway Flow",
+  "tags": [
+    "assembly",
+    "langgraph",
+    "multi-agent",
+    "langflow"
+  ]
+}

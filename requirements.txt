@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+streamlit
+pandas
+pytest
+httpx
+requests
+langgraph
+langgraph-checkpoint-sqlite
